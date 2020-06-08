@@ -1,0 +1,590 @@
+{
+	"info": {
+		"_postman_id": "35581a6b-3c2f-43f1-8c1e-220ed7c9f8da",
+		"name": "Tableau Webhooks Requests",
+		"description": "Work with the developer preview of webhooks for Tableau. This collection contains all REST API calls needed to create, delete, list, and test webhooks. Syntax is provided for both XML and JSON payloads. For convenience the collection also contains variables that you need to set for your server and, after signin, the site ID and auth token.\n\nSee also https://github.com/tableau/webhooks-docs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "JSON",
+			"item": [
+				{
+					"name": "Sign in (username and password)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"credentials\": {\r\n     \"site\": {\r\n        \"contentUrl\": \"\"\r\n     },\r\n     \"name\": \"{{username}}\",\r\n     \"password\": \"{{password}}\"\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/3.6/auth/signin",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"auth",
+								"signin"
+							]
+						},
+						"description": "Sign in with a usernamd and password and get an authentication token from Tableau. Then update the Postman collection variables to use the returned authentication token and site ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Sign in (personal access token)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"credentials\": {\r\n     \"site\": {\r\n        \"contentUrl\": \"\"\r\n     },\r\n     \"personalAccessTokenName\": \"{{pat-name}}\",\r\n     \"personalAccessTokenSecret\": \"{{pat-secret}}\"\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/3.6/auth/signin",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"auth",
+								"signin"
+							]
+						},
+						"description": "Sign in with a personal access token and get an authentication token from Tableau. Then update the Postman collection variables to use the returned authentication token and site ID."
+					},
+					"response": []
+				},
+				{
+					"name": "List webhooks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Tableau-Auth",
+								"value": "{{tableau-auth-token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/3.6/sites/{{site-id}}/webhooks",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"sites",
+								"{{site-id}}",
+								"webhooks"
+							]
+						},
+						"description": "List all configured webhooks for the given site."
+					},
+					"response": []
+				},
+				{
+					"name": "Get a webhook",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Tableau-Auth",
+								"value": "{{tableau-auth-token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/3.6/sites/{{site-id}}/webhooks/{{webhook-id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"sites",
+								"{{site-id}}",
+								"webhooks",
+								"{{webhook-id}}"
+							]
+						},
+						"description": "Get a single webhook by its ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a webhook",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Tableau-Auth",
+								"value": "{{tableau-auth-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"webhook\": {\r\n      \"webhook-source\": {\r\n         \"{{webhook-source-api-event-name}}\": {}\r\n      },\r\n      \"webhook-destination\": {\r\n         \"webhook-destination-http\": {\r\n            \"method\": \"POST\",\r\n            \"url\": \"{{webhook-url}}\"\r\n         }\r\n      },\r\n      \"name\": \"{{webhook-name}}\"\r\n   }\r\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/3.6/sites/{{site-id}}/webhooks",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"sites",
+								"{{site-id}}",
+								"webhooks"
+							]
+						},
+						"description": "Create a new webhook on the given site using the name, event type, and destination URL provided."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a webhook",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Tableau-Auth",
+								"value": "{{tableau-auth-token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/3.6/sites/{{site-id}}/webhooks/{{webhook-id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"sites",
+								"{{site-id}}",
+								"webhooks",
+								"{{webhook-id}}"
+							]
+						},
+						"description": "Delete a single webhook by its ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Test a webhook",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Tableau-Auth",
+								"value": "{{tableau-auth-token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/3.6/sites/{{site-id}}/webhooks/{{webhook-id}}/test",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"sites",
+								"{{site-id}}",
+								"webhooks",
+								"{{webhook-id}}",
+								"test"
+							]
+						},
+						"description": "Test a single webhook."
+					},
+					"response": []
+				}
+			],
+			"description": "Webhooks requests that send payloads and accept responses formatted as JSON.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ca634686-e322-4660-9162-df5065c654fc",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "101cf1e5-1cf9-4cd0-9679-f4342e38831e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "XML",
+			"item": [
+				{
+					"name": "Sign in (username and password)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/xml",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/xml",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<tsRequest>\r\n  <credentials \r\n\t\tname=\"{{username}}\"\r\n\t\tpassword=\"{{password}}\" >\r\n    <site contentUrl=\"\" />\r\n  </credentials>\r\n</tsRequest>",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/3.6/auth/signin",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"auth",
+								"signin"
+							]
+						},
+						"description": "Sign in with a usernamd and password and get an authentication token from Tableau. Then update the Postman collection variables to use the returned authentication token and site ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Sign in (personal access token)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/xml",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/xml",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<tsRequest>\r\n  <credentials \r\n\t\tpersonalAccessTokenName=\"{{username}}\" \r\n\t\tpersonalAccessTokenSecret=\"{{password}}\" >\r\n  \t<site contentUrl=\"\" />\r\n  </credentials>\r\n</tsRequest>",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/3.6/auth/signin",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"auth",
+								"signin"
+							]
+						},
+						"description": "Sign in with a personal access token and get an authentication token from Tableau. Then update the Postman collection variables to use the returned authentication token and site ID."
+					},
+					"response": []
+				},
+				{
+					"name": "List webhooks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Tableau-Auth",
+								"value": "{{tableau-auth-token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/xml",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/3.6/sites/{{site-id}}/webhooks",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"sites",
+								"{{site-id}}",
+								"webhooks"
+							]
+						},
+						"description": "List all configured webhooks for the given site."
+					},
+					"response": []
+				},
+				{
+					"name": "Get a webhook",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Tableau-Auth",
+								"value": "{{tableau-auth-token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/xml",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/3.6/sites/{{site-id}}/webhooks/{{webhook-id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"sites",
+								"{{site-id}}",
+								"webhooks",
+								"{{webhook-id}}"
+							]
+						},
+						"description": "Get a single webhook by its ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a webhook",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Tableau-Auth",
+								"value": "{{tableau-auth-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							},
+							{
+								"key": "Accept",
+								"value": "application/xml",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<tsRequest>\n  <webhook name=\"{{webhook-name}}\">\n    <webhook-source>\n      <{{webhook-source-api-event-name}} />\n    </webhook-source>\n    <webhook-destination>\n      <webhook-destination-http method=\"POST\" url=\"{{url}}\" />\n    </webhook-destination>\n  </webhook>\n</tsRequest>"
+						},
+						"url": {
+							"raw": "{{server}}/api/3.6/sites/{{site-id}}/webhooks",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"sites",
+								"{{site-id}}",
+								"webhooks"
+							]
+						},
+						"description": "Create a new webhook on the given site using the event type, name, and destination URL provided."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a webhook",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Tableau-Auth",
+								"value": "{{tableau-auth-token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/xml",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/3.6/sites/{{site-id}}/webhooks/{{webhook-id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"sites",
+								"{{site-id}}",
+								"webhooks",
+								"{{webhook-id}}"
+							]
+						},
+						"description": "Delete a single webhook by its ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Test a webhook",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Tableau-Auth",
+								"value": "{{tableau-auth-token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/xml",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/3.6/sites/{{site-id}}/webhooks/{{webhook-id}}/test",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"3.6",
+								"sites",
+								"{{site-id}}",
+								"webhooks",
+								"{{webhook-id}}",
+								"test"
+							]
+						},
+						"description": "Test a single webhook."
+					},
+					"response": []
+				}
+			],
+			"description": "Webhooks requests that send payloads and accept responses formatted as XML.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6c264144-3e70-47b1-b6ce-c5f9993ab24c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8f5e51a2-045d-499b-91a1-4627a55996c3",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "7871142f-77c4-47b2-9bfa-bc897a556676",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "8c4f5f91-5cfc-4298-825a-a79aab1ffcc9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

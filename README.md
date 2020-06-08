@@ -1,4 +1,4 @@
-#Tableau API and Use Cases
+## Tableau API and Use Cases
 Demonstration of Tableau API functionalities (Presented at DC-NoVA-Baltimore TUG)
 
 This is an emulation of the functionalities of Tableau API, especially highlighting it's programmatic and granular control over your data.
